@@ -30,10 +30,22 @@ app.post('/receive', function (request, respond) {
 
   request.on('end', function () {
     fs.appendFile(filePath, body, function () {
-      respond.end();
+      respond.send(body).end();
     });
   });
 });
+
+app.delete('/delete', function (request, respond) {
+  filePath = path3 + '/data.txt';
+  fs.unlink(filePath, (err) => {
+    if (err) {
+      console.error(err)
+      return
+    }
+    respond.end()
+    //file removed
+  })
+})
 
 // set port, listen for requests
 const PORT = 80;
