@@ -1,8 +1,10 @@
-const express = require("express");
-const cors = require("cors");
+const express = require('express');
+const cors = require('cors');
+const fs = require('fs');
 
 const path = 'public';
 const path2 = 'backoffice';
+const path3 = 'docs';
 
 const app = express();
 
@@ -17,6 +19,20 @@ app.get('/test', function (req, res) {
 
 app.get('/anotherTest', function (req, res) {
   res.send("2000!");
+});
+
+app.post('/receive', function (request, respond) {
+  var body = '';
+  filePath = path3 + '/data.txt';
+  request.on('data', function (data) {
+    body += data;
+  });
+
+  request.on('end', function () {
+    fs.appendFile(filePath, body, function () {
+      respond.end();
+    });
+  });
 });
 
 // set port, listen for requests
